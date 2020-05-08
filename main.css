@@ -1,0 +1,10 @@
+#nums{
+    text-align: center;
+}
+#nums p{
+    margin: 2px;
+    width: 15px;
+    color: transparent;
+    background-color: #3edcf7;
+    display: inline-block;
+}
