@@ -1,4 +1,7 @@
-const number_of_bars = 100;
+const number_of_bars = 50;
+const bar_color = '#3edcf7';
+const selected_bar_color = '#ff6161';
+const sorted_bar_color = '#68fc5d';
 
 function merge(num_array, left, mid, right, util) {
     let i = left, j = mid + 1, k = left;
@@ -163,7 +166,7 @@ function heap_sort(num_array, util){
     return num_array;
 }
 
-document.querySelector('#new-nums').addEventListener('click', () => {
+function generate_new_nums(){
     let nums_div = document.querySelector('#nums');
     nums_div.innerHTML = '';
     for(let i = 0; i < number_of_bars; i++){
@@ -173,16 +176,40 @@ document.querySelector('#new-nums').addEventListener('click', () => {
         num.style.height = 5*val + 'px';
         nums_div.appendChild(num);
     }
+}
+
+function disable_sort_buttons(){
+    let buttons = document.querySelectorAll('.nav .nav-item .nav-link');
+    for(let i = 1; i < buttons.length; i++){
+        buttons[i].disabled = true;
+    }
+}
+
+function enable_sort_buttons(){
+    let buttons = document.querySelectorAll('.nav .nav-item .nav-link');
+    for(let i = 1; i < buttons.length; i++){
+        buttons[i].disabled = false;
+    }
+}
+
+document.querySelector('#new-nums').addEventListener('click', () => {
+    generate_new_nums();
+    enable_sort_buttons();
 });
 
 document.querySelector('#heap-sort').addEventListener('click', () => {
+    disable_sort_buttons();
+
     let nums = document.querySelectorAll('#nums p');
     let num_array = []
     for(let i = 0; i < number_of_bars; i++){
+        nums[i].style.backgroundColor = bar_color;
         num_array.push(Number(nums[i].textContent));
     }
+
     let util = []
     num_array = heap_sort(num_array, util);
+
     let time = 0;
     for(let i = 0; i < util.length; i++){
         let x = util[i][0];
@@ -200,12 +227,12 @@ document.querySelector('#heap-sort').addEventListener('click', () => {
                 nums[x].style.height = 5*num_y + 'px';
                 nums[y].style.height = 5*num_x + 'px';
 
-                nums[y].style.backgroundColor = '#68fc5d';
+                nums[y].style.backgroundColor = sorted_bar_color;
             }, time*10);
         }else{
             setTimeout(() => {
-                nums[x].style.backgroundColor = '#ff6161';
-                nums[y].style.backgroundColor = '#ff6161';
+                nums[x].style.backgroundColor = selected_bar_color;
+                nums[y].style.backgroundColor = selected_bar_color;
 
                 let num_x = Number(nums[x].textContent);
                 let num_y = Number(nums[y].textContent);
@@ -218,8 +245,8 @@ document.querySelector('#heap-sort').addEventListener('click', () => {
             }, time*10);
             time++;
             setTimeout(() => {
-                nums[x].style.backgroundColor = '#3edcf7';
-                nums[y].style.backgroundColor = '#3edcf7';
+                nums[x].style.backgroundColor = bar_color;
+                nums[y].style.backgroundColor = bar_color;
             }, time*10);
         }
         time++;
@@ -227,9 +254,12 @@ document.querySelector('#heap-sort').addEventListener('click', () => {
 });
 
 document.querySelector('#quick-sort').addEventListener('click', () => {
+    disable_sort_buttons();
+
     let nums = document.querySelectorAll('#nums p');
     let num_array = []
     for(let i = 0; i < number_of_bars; i++){
+        nums[i].style.backgroundColor = bar_color;
         num_array.push(Number(nums[i].textContent));
     }
     let util = []
@@ -252,8 +282,8 @@ document.querySelector('#quick-sort').addEventListener('click', () => {
                 nums[x].style.height = 5*num_y + 'px';
                 nums[y].style.height = 5*num_x + 'px';
 
-                nums[x].style.backgroundColor = '#68fc5d';
-                if(x != y) nums[y].style.backgroundColor = '#3edcf7';
+                nums[x].style.backgroundColor = sorted_bar_color;
+                if(x != y) nums[y].style.backgroundColor = bar_color;
             }, time*10);
         }else if(pivot){
             setTimeout(() => {
@@ -261,8 +291,8 @@ document.querySelector('#quick-sort').addEventListener('click', () => {
             }, time*10);
         }else{
             setTimeout(() => {
-                nums[x].style.backgroundColor = '#ff6161';
-                nums[y].style.backgroundColor = '#ff6161';
+                nums[x].style.backgroundColor = selected_bar_color;
+                nums[y].style.backgroundColor = selected_bar_color;
 
                 let num_x = Number(nums[x].textContent);
                 let num_y = Number(nums[y].textContent);
@@ -275,8 +305,8 @@ document.querySelector('#quick-sort').addEventListener('click', () => {
             }, time*10);
             time++;
             setTimeout(() => {
-                nums[x].style.backgroundColor = '#3edcf7';
-                nums[y].style.backgroundColor = '#3edcf7';
+                nums[x].style.backgroundColor = bar_color;
+                nums[y].style.backgroundColor = bar_color;
             }, time*10);
         }
         time++;
@@ -284,9 +314,12 @@ document.querySelector('#quick-sort').addEventListener('click', () => {
 });
 
 document.querySelector('#selection-sort').addEventListener('click', () => {
+    disable_sort_buttons();
+
     let nums = document.querySelectorAll('#nums p');
     let num_array = []
     for(let i = 0; i < number_of_bars; i++){
+        nums[i].style.backgroundColor = bar_color;
         num_array.push(Number(nums[i].textContent));
     }
     let util = []
@@ -300,10 +333,10 @@ document.querySelector('#selection-sort').addEventListener('click', () => {
 
         if(swap){
             setTimeout(() => {
-                nums[number_of_bars - 1].style.backgroundColor = '#3edcf7';
+                nums[number_of_bars - 1].style.backgroundColor = bar_color;
                 
-                nums[x].style.backgroundColor = '#ff6161';
-                nums[y].style.backgroundColor = '#ff6161';
+                nums[x].style.backgroundColor = selected_bar_color;
+                nums[y].style.backgroundColor = selected_bar_color;
 
                 let num_x = Number(nums[x].textContent);
                 let num_y = Number(nums[y].textContent);
@@ -316,19 +349,19 @@ document.querySelector('#selection-sort').addEventListener('click', () => {
             }, time*10);
             time++;
             setTimeout(() => {
-                nums[x].style.backgroundColor = '#68fc5d';
-                if(x!=y) nums[y].style.backgroundColor = '#3edcf7';
+                nums[x].style.backgroundColor = sorted_bar_color;
+                if(x!=y) nums[y].style.backgroundColor = bar_color;
             }, time*10);
         }else{
             if(beg){
                 setTimeout(() => {
-                    nums[y].style.backgroundColor = '#ff6161';
+                    nums[y].style.backgroundColor = selected_bar_color;
                 }, time*10);
             }
             else{
                 setTimeout(() => {
-                    nums[y].style.backgroundColor = '#ff6161';
-                    nums[y-1].style.backgroundColor = '#3edcf7';
+                    nums[y].style.backgroundColor = selected_bar_color;
+                    nums[y-1].style.backgroundColor = bar_color;
                 }, time*10);
             }
         }
@@ -337,9 +370,12 @@ document.querySelector('#selection-sort').addEventListener('click', () => {
 });
 
 document.querySelector('#insertion-sort').addEventListener('click', () => {
+    disable_sort_buttons();
+
     let nums = document.querySelectorAll('#nums p');
     let num_array = []
     for(let i = 0; i < number_of_bars; i++){
+        nums[i].style.backgroundColor = bar_color;
         num_array.push(Number(nums[i].textContent));
     }
     let util = []
@@ -352,23 +388,23 @@ document.querySelector('#insertion-sort').addEventListener('click', () => {
 
         if(start){
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#68fc5d';
+                nums[j].style.backgroundColor = sorted_bar_color;
             }, time*10);
             time++;
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#ff6161';
+                nums[j].style.backgroundColor = selected_bar_color;
             }, time*10);
         }else if(end){
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#68fc5d';
+                nums[j].style.backgroundColor = sorted_bar_color;
             }, time*10);
             time++;
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#3edcf7';
+                nums[j].style.backgroundColor = bar_color;
             }, time*10);
         }else{
             setTimeout(() => {
-                nums[j+1].style.backgroundColor = '#ff6161';
+                nums[j+1].style.backgroundColor = selected_bar_color;
 
                 let prev = Number(nums[j].textContent);
                 let curr = Number(nums[j+1].textContent);
@@ -382,8 +418,8 @@ document.querySelector('#insertion-sort').addEventListener('click', () => {
             setTimeout(() => {
                 let curr = Number(nums[j+1].textContent);
 
-                nums[j+1].style.backgroundColor = '#3edcf7';
-                nums[j].style.backgroundColor = '#ff6161';
+                nums[j+1].style.backgroundColor = bar_color;
+                nums[j].style.backgroundColor = selected_bar_color;
                 nums[j+1].style.height = 5*curr + 'px';
             }, time*10);
         }
@@ -391,16 +427,19 @@ document.querySelector('#insertion-sort').addEventListener('click', () => {
     }
     for(let i = 0; i < num_array.length; i++){
         setTimeout(() => {
-            nums[i].style.backgroundColor = '#68fc5d';
+            nums[i].style.backgroundColor = sorted_bar_color;
         }, time*10);
         time++;
     }
 });
 
 document.querySelector('#bubble-sort').addEventListener('click', () => {
+    disable_sort_buttons();
+
     let nums = document.querySelectorAll('#nums p');
     let num_array = []
     for(let i = 0; i < number_of_bars; i++){
+        nums[i].style.backgroundColor = bar_color;
         num_array.push(Number(nums[i].textContent));
     }
     let util = []
@@ -414,12 +453,12 @@ document.querySelector('#bubble-sort').addEventListener('click', () => {
 
         if(sorted){
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#68fc5d';
+                nums[j].style.backgroundColor = sorted_bar_color;
             }, time*10);
         }else{
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#ff6161';
-                nums[j+1].style.backgroundColor = '#ff6161';
+                nums[j].style.backgroundColor = selected_bar_color;
+                nums[j+1].style.backgroundColor = selected_bar_color;
             }, time*10);
             time++;
 
@@ -437,7 +476,7 @@ document.querySelector('#bubble-sort').addEventListener('click', () => {
             }
 
             setTimeout(() => {
-                nums[j].style.backgroundColor = '#3edcf7';
+                nums[j].style.backgroundColor = bar_color;
             }, time*10);
         }
         time++;
@@ -445,9 +484,12 @@ document.querySelector('#bubble-sort').addEventListener('click', () => {
 });
 
 document.querySelector('#merge-sort').addEventListener('click', () => {
+    disable_sort_buttons();
+
     let nums = document.querySelectorAll('#nums p');
     let num_array = []
     for(let i = 0; i < number_of_bars; i++){
+        nums[i].style.backgroundColor = bar_color;
         num_array.push(Number(nums[i].textContent));
     }
     let util = []
@@ -461,15 +503,15 @@ document.querySelector('#merge-sort').addEventListener('click', () => {
         let ht = util[i][3];
 
         setTimeout(() => {
-            nums[x].style.backgroundColor = '#ff6161';
-            nums[y].style.backgroundColor = '#ff6161';
+            nums[x].style.backgroundColor = selected_bar_color;
+            nums[y].style.backgroundColor = selected_bar_color;
         }, time*10);
         time++;
         
         if(i == util.length - 1){
             setTimeout(() => {
-                nums[x].style.backgroundColor = '#3edcf7';
-                nums[y].style.backgroundColor = '#3edcf7';
+                nums[x].style.backgroundColor = bar_color;
+                nums[y].style.backgroundColor = bar_color;
                 nums[z].style.height = 5*ht + 'px';
                 nums[z].textContent = ht;
             }, time*10);
@@ -479,20 +521,20 @@ document.querySelector('#merge-sort').addEventListener('click', () => {
             
             if(x == next_x){
                 setTimeout(() => {
-                    nums[y].style.backgroundColor = '#3edcf7';
+                    nums[y].style.backgroundColor = bar_color;
                     nums[z].style.height = 5*ht + 'px';
                     nums[z].textContent = ht;
                 }, time*10);
             }else if(y == next_y){
                 setTimeout(() => {
-                    nums[x].style.backgroundColor = '#3edcf7';
+                    nums[x].style.backgroundColor = bar_color;
                     nums[z].style.height = 5*ht + 'px';
                     nums[z].textContent = ht;
                 }, time*10);
             }else{
                 setTimeout(() => {
-                    nums[x].style.backgroundColor = '#3edcf7';
-                    nums[y].style.backgroundColor = '#3edcf7';
+                    nums[x].style.backgroundColor = bar_color;
+                    nums[y].style.backgroundColor = bar_color;
                     nums[z].style.height = 5*ht + 'px';
                     nums[z].textContent = ht;
                 }, time*10);
@@ -502,13 +544,15 @@ document.querySelector('#merge-sort').addEventListener('click', () => {
     }
     for(let i = 0; i < num_array.length; i++){
         setTimeout(() => {
-            nums[i].style.backgroundColor = '#68fc5d';
+            nums[i].style.backgroundColor = sorted_bar_color;
         }, time*10);
         time++;
     }
 });
 
 document.querySelector('#test').addEventListener('click', () => {
+    disable_sort_buttons();
+
     for(let i = 0; i < 1000 ; i++){
         let arr = []
         for(let j = 0; j < 1000; j++){
